@@ -113,7 +113,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 
-const HERO_IMAGES = [
+const DEFAULT_HERO_IMAGES = [
   "/images/hero.jpg",
   "/images/about.jpg",
   "/images/hero.jpg",
@@ -121,11 +121,20 @@ const HERO_IMAGES = [
 
 const Hero = () => {
   const [home, setHome] = useState(null);
+  const [images, setImages] = useState(DEFAULT_HERO_IMAGES);
 
   useEffect(() => {
     async function loadHome() {
       const data = await fetchAPI("/home");
-      if (data) setHome(data);
+      if (data) {
+        setHome(data);
+
+        if (data.banner_image && data.banner_image.trim() !== "") {
+          setImages([data.banner_image]);
+        } else {
+          setImages(DEFAULT_HERO_IMAGES);
+        }
+      }
     }
     loadHome();
   }, []);
@@ -142,22 +151,16 @@ const Hero = () => {
         pagination={{ clickable: true, el: ".custom-pagination" }}
         className="h-full w-full"
       >
-        {HERO_IMAGES.map((image, index) => (
+        {images.map((image, index) => (
           <SwiperSlide key={index}>
             <div className="relative h-full w-full flex items-center justify-center">
-
               {/* IMAGE */}
               <div className="absolute inset-0 z-0">
-                <img
-                  src={image}
-                  alt="hero"
-                  className="w-full h-full object-cover"
-                />
+                <img src={image} alt="hero" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-b from-[#00C0ED33] to-black/40" />
               </div>
 
               <div className="relative z-10 text-center max-w-4xl px-4">
-                
                 <div className="animate-slideDown bg-[#FDD308]/90 inline-block px-10 py-5 rounded-2xl mb-6 shadow-lg">
                   <h1 className="text-4xl md:text-6xl font-black text-[#00BAF2]">
                     {home.title}
@@ -169,7 +172,6 @@ const Hero = () => {
                     {home.content}
                   </p>
                 </div>
-
               </div>
             </div>
           </SwiperSlide>
@@ -197,37 +199,21 @@ const Hero = () => {
         }
 
         @keyframes slideDown {
-          from {
-            opacity: 0;
-            transform: translateY(-40px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(-40px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeUp {
-          from {
-            opacity: 0;
-            transform: translateY(40px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(40px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
-        .animate-slideDown {
-          animation: slideDown 0.9s ease-out;
-        }
-
-        .animate-fadeUp {
-          animation: fadeUp 1.1s ease-out;
-        }
+        .animate-slideDown { animation: slideDown 0.9s ease-out; }
+        .animate-fadeUp { animation: fadeUp 1.1s ease-out; }
       `}</style>
     </section>
   );
 };
 
 export default Hero;
+

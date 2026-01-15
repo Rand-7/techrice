@@ -157,15 +157,13 @@ const fadeBlur = {
             //   key={item.id || index}
             //   className="flex flex-col items-center gap-6 rounded-[20px] border border-blue-50/50 bg-[#F9FFF6] py-12 shadow-sm transition-all hover:shadow-md"
             // >
-            <motion.div
+            <div
              key={item.id || index}
-  variants={card}
+
   className="flex flex-col items-center gap-6 rounded-[20px] border border-blue-50/50 bg-[#F9FFF6] py-12 shadow-sm transition-all hover:shadow-md"
 >
 
-<motion.div
-  animate={{ scale: [1, 1.08, 1] }}
-  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+<div
   className={`flex h-12 w-12 items-center justify-center rounded-xl ${style.bgColor} shadow-sm`}
 >
 
@@ -174,12 +172,12 @@ const fadeBlur = {
                   alt={item.title}
                   className="h-6 w-6 object-contain"
                 />
-              </motion.div>
+              </div>
 
               <h3 className="text-xl font-bold text-gray-800">
                 {item.title}
               </h3>
-            </motion.div>
+            </div>
           );
         })}
       </motion.div>

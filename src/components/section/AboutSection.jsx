@@ -80,11 +80,13 @@
 
 // export default AboutSection;
 
+
 "use client";
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { fetchAPI } from "../../../app/lib/api"; 
 
+// ===== Counter Animation =====
 const Counter = ({ value }) => {
   const motionValue = useMotionValue(0);
   const springValue = useSpring(motionValue, { duration: 3000 });
@@ -100,63 +102,108 @@ const Counter = ({ value }) => {
   return <span>{displayValue}</span>;
 };
 
+// ===== Animations Variants =====
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const staggerContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const imageAnim = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: { opacity: 1, scale: 1 },
+};
+
 const AboutSection = () => {
   const [whoAreWe, setWhoAreWe] = useState(null);
   const [homeStats, setHomeStats] = useState(null);
 
-useEffect(() => {
-  fetchAPI("/who-are-we")
-    .then((res) => {
-      setWhoAreWe(res); 
-    })
-    .catch(console.error);
-}, []);
+  useEffect(() => {
+    fetchAPI("/who-are-we")
+      .then(setWhoAreWe)
+      .catch(console.error);
+  }, []);
 
-useEffect(() => {
-  fetchAPI("/home")
-    .then((res) => {
-      setHomeStats(res?.statistics);
-    })
-    .catch(console.error);
-}, []);
+  useEffect(() => {
+    fetchAPI("/home")
+      .then((res) => setHomeStats(res?.statistics))
+      .catch(console.error);
+  }, []);
 
+  const stats = homeStats
+    ? [
+        { label: "ورشة", value: homeStats.workshops },
+        { label: "محافظات", value: homeStats.governorates },
+        { label: "مبادرة", value: Number(homeStats.initiative) },
+        { label: "فرص تدريب", value: homeStats.training },
+        { label: "فرص عمل", value: homeStats.jobs },
+        { label: "مستفيد", value: homeStats.beneficiary },
+      ]
+    : [];
 
-const stats = homeStats
-  ? [
-      { label: "ورشة", value: homeStats.workshops },
-      { label: "محافظات", value: homeStats.governorates },
-      { label: "مبادرة", value: Number(homeStats.initiative) },
-      { label: "فرص تدريب", value: homeStats.training },
-      { label: "فرص عمل", value: homeStats.jobs },
-      { label: "مستفيد", value: homeStats.beneficiary },
-    ]
-  : [];
-
-
-  if (!whoAreWe) return null; 
+  if (!whoAreWe) return null;
 
   return (
-    <section className="relative bg-[#F9FFF2] py-20 overflow-hidden" dir="rtl">
-      
-      <div className="container mx-auto px-4 mb-20">
+    <motion.section
+      className="relative bg-[#F9FFF2] py-20 overflow-hidden"
+      dir="rtl"
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+    >
+      {/* ===== Stats ===== */}
+      <motion.div
+        className="container mx-auto px-4 mb-20"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8 text-center">
           {stats.map((stat, index) => (
-            <div key={index} className="flex flex-col">
+            <motion.div
+              key={index}
+              variants={fadeUp}
+              className="flex flex-col"
+            >
               <span className="text-3xl font-bold text-gray-800">
                 + <Counter value={stat.value} />
               </span>
               <span className="text-[#FFD700] font-bold mt-2">
                 {stat.label}
               </span>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
-      <div className="relative max-w-6xl mx-auto bg-white rounded-[100px] md:rounded-[200px] py-16 px-10 md:px-20 shadow-sm border border-yellow-50 mx-4">
+      {/* ===== About Card ===== */}
+      <motion.div
+        className="relative max-w-6xl mx-auto bg-white rounded-[100px] md:rounded-[200px] py-16 px-10 md:px-20 shadow-sm border border-yellow-50 mx-4"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        transition={{ delay: 0.2 }}
+      >
         <div className="flex flex-col md:flex-row items-center gap-12">
           
-          <div className="flex-1 text-right">
+          {/* ===== Text ===== */}
+          <motion.div
+            className="flex-1 text-right"
+            variants={fadeUp}
+            transition={{ duration: 0.6 }}
+          >
             <div className="bg-[#FFFCE4] inline-block px-6 py-2 rounded-lg mb-4">
               <h2 className="text-[#FFD700] text-2xl font-bold">
                 من نحن؟
@@ -175,9 +222,14 @@ const stats = homeStats
               <span>←</span>
               <a href="/about">إقرأ المزيد عنا</a>
             </button>
-          </div>
+          </motion.div>
 
-          <div className="flex-1 flex justify-center">
+          {/* ===== Image ===== */}
+          <motion.div
+            className="flex-1 flex justify-center"
+            variants={imageAnim}
+            transition={{ duration: 0.6 }}
+          >
             <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-2xl">
               <img
                 src="/images/about.jpg"
@@ -185,12 +237,13 @@ const stats = homeStats
                 className="w-full h-full object-cover"
               />
             </div>
-          </div>
+          </motion.div>
 
         </div>
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   );
 };
 
 export default AboutSection;
+
