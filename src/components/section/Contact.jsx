@@ -227,7 +227,7 @@ useEffect(() => {
               onChange={handleChange}
               placeholder="الاسم الكامل"
               required
-              className="w-full p-4 bg-[#F9FFF2] rounded-xl outline-none placeholder-gray-400"
+              className="w-full p-4 bg-[#F9FFF2] rounded-xl outline-none placeholder-gray-400 text-black"
             />
 <label className="font-bold text-gray-700 mr-2">البريد الإلكتروني</label>
             <input
@@ -237,7 +237,7 @@ useEffect(() => {
               onChange={handleChange}
               placeholder="example@gmail.com"
               required
-              className="w-full p-4 bg-[#F9FFF2] rounded-xl outline-none text-left placeholder-gray-400"
+              className="w-full p-4 bg-[#F9FFF2] rounded-xl outline-none text-left placeholder-gray-400 text-black"
             />
 <label className="font-bold text-gray-700 mr-2">عنوان الرسالة</label>
             <input
@@ -246,7 +246,7 @@ useEffect(() => {
               onChange={handleChange}
               placeholder="عنوان الرسالة"
               required
-              className="w-full p-4 bg-[#F9FFF2] rounded-xl outline-none placeholder-gray-400" />
+              className="w-full p-4 bg-[#F9FFF2] rounded-xl outline-none placeholder-gray-400 text-black" />
 <label className="font-bold text-gray-700 mr-2">ادخل الرسالة</label>
             <textarea
               name="message"
@@ -255,7 +255,7 @@ useEffect(() => {
               rows="5"
               placeholder="أدخل الرسالة"
               required
-              className="w-full p-4 bg-[#F9FFF2] rounded-xl outline-none resize-none placeholder-gray-400"
+              className="w-full p-4 bg-[#F9FFF2] rounded-xl outline-none resize-none placeholder-gray-400 text-black"
             />
 
             <button
