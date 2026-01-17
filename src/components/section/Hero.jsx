@@ -160,7 +160,7 @@ const Hero = () => {
                 <div className="absolute inset-0 bg-gradient-to-b from-[#00C0ED33] to-black/40" />
               </div>
 
-              <div className="relative z-10 text-center max-w-4xl px-4">
+              <div className="relative z-10 text-center max-w-4xl px-4 cursor-default">
                 <div className="animate-slideDown bg-[#FDD308]/90 inline-block px-10 py-5 rounded-2xl mb-6 shadow-lg">
                   <h1 className="text-4xl md:text-6xl font-black text-[#00BAF2]">
                     {home.title}

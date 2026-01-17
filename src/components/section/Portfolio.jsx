@@ -95,6 +95,10 @@
 
 import { useEffect, useState } from "react";
 import { fetchAPI } from "../../../app/lib/api";
+import { motion } from "framer-motion";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 
 const Portfolio = () => {
   const [projects, setProjects] = useState([]);
@@ -105,6 +109,14 @@ const Portfolio = () => {
     { image: "/images/work2.jpg", isWide: false },
     { image: "/images/work3.jpg", isWide: true },
   ];
+useEffect(() => {
+  AOS.init({
+    duration: 800,
+    easing: "ease-out",
+    once: true,
+    offset: 120,
+  });
+}, []);
 
   useEffect(() => {
     fetchAPI("/workshops")
@@ -135,17 +147,12 @@ const Portfolio = () => {
 
   return (
     <section className="py-16 bg-white" dir="rtl" id="portfolio">
-      <div className="container mx-auto px-4 max-w-6xl">
+      <div className="container mx-auto px-6 lg:px-12">
 
-        <div className="flex flex-col items-center text-center mb-12 relative">
-          <button
-            onClick={() => setShowAll(true)}
-            className="md:absolute md:left-0 md:top-10 flex items-center gap-2 text-[#00C0ED] font-bold text-sm hover:underline mb-4 md:mb-0"
-          >
-            <span>عرض جميع الأعمال</span>
-            <img src="/images/arrow.png" alt="arrow" className="w-4 h-4" /> 
-          </button>
-
+<div
+  className="flex flex-col items-center text-center mb-12 relative"
+  data-aos="fade-down"
+>
           <div className="bg-[#FFFCE4] px-10 py-2 rounded-lg mb-4">
             <h2 className="text-[#FFD700] text-xl md:text-2xl font-bold">
               أعمالنا
@@ -159,13 +166,17 @@ const Portfolio = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {visibleProjects.map((project) => (
-            <div
-              key={project.id}
-              className={`relative rounded-2xl overflow-hidden group h-80 ${
-                project.isWide ? "md:col-span-2" : "md:col-span-1"
-              }`}
-            >
+{visibleProjects.map((project, index) => (
+<div
+  key={project.id}
+  data-aos="fade-up"
+  className={`relative rounded-2xl overflow-hidden group h-80 ${
+    project.isWide ? "md:col-span-2" : "md:col-span-1"
+  }`}
+>
+
+
+
               <img
                 src={project.image}
                 alt={project.title}
@@ -191,7 +202,25 @@ const Portfolio = () => {
             </div>
           ))}
         </div>
+        <motion.button
+  className="mt-6 mx-auto flex items-center gap-2 text-[#00C0ED] font-bold text-sm cursor-pointer"
+  whileHover="hover"
+  initial="rest"
+  animate="rest"
+>
+  <span>عرض جميع الخدمات</span>
 
+  <motion.img
+    src="/images/arrow.png"
+    alt="arrow"
+    className="w-4 h-4"
+    variants={{
+      rest: { x: 0 },
+      hover: { x: -6 },
+    }}
+    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+  />
+</motion.button>
       </div>
     </section>
   );

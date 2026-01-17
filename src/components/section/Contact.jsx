@@ -93,6 +93,9 @@
 
 import { useEffect, useState } from "react";
 import { fetchAPI, postAPI } from "../../../app/lib/api";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 
 const Contact = () => {
   const [contactInfo, setContactInfo] = useState(null);
@@ -114,6 +117,19 @@ const Contact = () => {
     })
     .catch(console.error);
 }, []);
+
+useEffect(() => {
+  fetchAPI("/contact")
+    .then((res) => setContactInfo(res))
+    .catch(console.error);
+
+  AOS.init({
+    duration: 800,
+    easing: "ease-out",
+    once: true, 
+  });
+}, []);
+
 
   const handleChange = (e) => {
     setFormData({
@@ -146,10 +162,10 @@ const Contact = () => {
 
   return (
     <section className="py-20 bg-white" dir="rtl" id="contact">
-      <div className="container mx-auto px-4 max-w-6xl">
+      <div className="container mx-auto px-6 lg:px-12" >
 
         {/* Header */}
-        <div className="flex flex-col items-center text-center mb-16">
+        <div className="flex flex-col items-center text-center mb-16" data-aos="fade-down">
           <div className="bg-[#FFFCE4] px-12 py-2 rounded-lg mb-4 shadow-sm">
             <h2 className="text-[#FFD700] text-xl md:text-2xl font-bold">
               تواصل معنا
@@ -166,7 +182,7 @@ const Contact = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
 
           {/* Contact Info */}
-          <div className="space-y-10" dir="ltr">
+          <div className="space-y-10" dir="ltr" data-aos="fade-right">
 
             <div className="flex flex-col gap-10">
               <div className="flex items-center justify-end gap-4">
@@ -203,7 +219,7 @@ const Contact = () => {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6"data-aos="fade-left">
             <label className="font-bold text-gray-700 mr-2">الاسم</label>
             <input
               name="name"
@@ -245,7 +261,7 @@ const Contact = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#00C0ED] text-white font-bold py-4 rounded-xl shadow-lg hover:bg-[#0096ba] transition-all"
+              className="w-full bg-[#00C0ED] text-white font-bold py-4 rounded-xl shadow-lg hover:bg-[#0096ba] transition-all cursor-pointer"
             >
               {loading ? "جارٍ الإرسال..." : "إرسال الرسالة"}
             </button>

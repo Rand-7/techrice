@@ -50,8 +50,8 @@ export default function HeroSlider() {
         </div>
       ))}
 
-      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 text-center">
-        <div className="rounded-2xl bg-[#F6E27F]/90 backdrop-blur-md px-8 py-6 md:px-14 md:py-8 shadow-2xl animate-fade-in">
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 text-center ">
+        <div className="rounded-2xl bg-[#F6E27F]/90 backdrop-blur-md px-8 py-6 md:px-14 md:py-8 shadow-2xl animate-fade-in cursor-default">
           <h1 className="mb-3 text-3xl font-bold text-slate-900 md:text-5xl">
             {slides[current].title}
           </h1>

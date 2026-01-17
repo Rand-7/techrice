@@ -76,8 +76,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchAPI } from "../../../app/lib/api"; 
-import { motion } from "framer-motion";
+import { fetchAPI } from "../../../app/lib/api";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+
 
 const iconsMap = {
   "فرص العمل": { iconBg: "bg-cyan-100", iconPath: "/images/job.png", borderColor: "border-b-cyan-400" },
@@ -95,21 +98,34 @@ const Services = () => {
       .catch(err => console.log(err));
   }, []);
 
+    useEffect(() => {
+    AOS.init({
+      duration: 800,
+      easing: "ease-out",
+      once: true,
+      offset: 120,
+    });
+  }, []);
+
   const cardVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
   };
 
   return (
-    <section className="py-16 bg-[#F9FFF2]" dir="rtl" id="services">
-      <div className="container mx-auto px-4 max-w-5xl">
-        <div className="flex flex-col items-center text-center mb-16 relative">
-          <button className="md:absolute md:left-0 md:top-10 flex items-center gap-2 text-[#00C0ED] font-bold text-sm hover:underline mb-6 md:mb-0">
-            <span>عرض جميع الخدمات</span>
-            <img src="/images/arrow.png" alt="arrow" className="w-4 h-4" />
-          </button>
+    <section className="w-full bg-[#F9FFF2] py-20"dir="rtl" id="services">
+    
+    <div className=" px-8">
 
-          <div className="bg-[#FFFCE4] px-10 py-2 rounded-lg mb-4 shadow-sm">
+
+
+<div
+  className="flex flex-col items-center text-center mb-20 relative"
+  data-aos="fade-up"
+>
+
+
+          <div className="bg-[#FFFCE4] px-8 py-2 rounded-lg mb-4 shadow-sm">
             <h2 className="text-[#FFD700] text-xl md:text-2xl font-bold">خدماتنا</h2>
           </div>
 
@@ -117,36 +133,76 @@ const Services = () => {
           <p className="text-gray-500 mt-1 text-sm md:text-base">من خلال تأمين كل من</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {services.map((service, index) => {
-            const style = iconsMap[service.service_name] || iconsMap["فرص العمل"];
-            return (
-              <motion.div
-                key={service._id || index}
-                className={`bg-white p-6 rounded-xl border-b-4 ${style.borderColor} flex flex-col items-start text-right cursor-pointer shadow-sm`}
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                whileHover={{
-                  scale: 1.08,
-                  boxShadow: "0px 15px 25px rgba(0,0,0,0.2)",
-                  transition: { duration: 0.3, ease: "easeOut" },
-                }}
-              >
-                <motion.div
-                  className={`${style.iconBg} p-2 rounded-lg mb-4`}
-                  whileHover={{ rotate: 15, transition: { duration: 0.3 } }}
-                >
-                  <img src={style.iconPath} alt={service.service_name} className="w-6 h-6 object-contain" />
-                </motion.div>
+        <div
+  className="
+    grid
+    grid-cols-1
+    md:grid-cols-2
+    gap-x-42
+    gap-y-20
+    mx-auto
+  "
+>
 
-                <h4 className="text-lg font-bold text-gray-800 mb-2">{service.service_name}</h4>
-                <p className="text-gray-600 text-sm leading-relaxed">{service.description}</p>
-              </motion.div>
-            );
-          })}
-        </div>
+
+
+{services.map((service, index) => {
+  const style = iconsMap[service.service_name] || iconsMap["فرص العمل"];
+
+  return (
+    <div
+      key={service._id || index}
+      data-aos="fade-up"
+      data-aos-delay={index * 100}
+      className={`
+        bg-white
+        p-9
+        min-h-[220px]
+        rounded-2xl
+        border-b-4
+        ${style.borderColor}
+        flex
+        flex-col
+        items-start
+        text-right
+        cursor-pointer
+        shadow-sm
+        transition-transform duration-300 hover:scale-105
+      `}
+    >
+      <div className={`${style.iconBg} p-2 rounded-lg mb-4`}>
+        <img
+          src={style.iconPath}
+          alt={service.service_name}
+          className="w-6 h-6 object-contain"
+        />
       </div>
+
+      <h4 className="text-lg font-bold text-gray-800 mb-2">
+        {service.service_name}
+      </h4>
+      <p className="text-gray-600 text-sm leading-relaxed">
+        {service.description}
+      </p>
+    </div>
+  );
+})}
+
+        </div>
+<div
+  className="mt-10 flex justify-center"
+  data-aos="fade-up"
+  data-aos-delay="400"
+>
+  <button className="flex items-center gap-2 text-[#00C0ED] font-bold text-sm">
+    <span>عرض جميع الخدمات</span>
+    <img src="/images/arrow.png" alt="arrow" className="w-4 h-4" />
+  </button>
+</div>
+
+
+      </div>
+
     </section>
   );
 };

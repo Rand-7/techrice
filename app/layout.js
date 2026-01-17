@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { Cairo } from "next/font/google";
+import Container from "../src/components/ui/container.jsx";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
     <body className={`${cairo.className} antialiased`}>
+      
         {children}
       </body>
     </html>

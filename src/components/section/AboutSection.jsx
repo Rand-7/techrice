@@ -84,23 +84,55 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { fetchAPI } from "../../../app/lib/api"; 
 
 // ===== Counter Animation =====
+// const Counter = ({ value }) => {
+//   const motionValue = useMotionValue(0);
+//   const springValue = useSpring(motionValue, { duration: 3000 });
+//   const [displayValue, setDisplayValue] = useState(0);
+
+//   useEffect(() => {
+//     motionValue.set(value);
+//     springValue.on("change", (latest) => {
+//       setDisplayValue(Math.round(latest));
+//     });
+//   }, [value, motionValue, springValue]);
+
+//   return <span>{displayValue}</span>;
+// };
 const Counter = ({ value }) => {
-  const motionValue = useMotionValue(0);
-  const springValue = useSpring(motionValue, { duration: 3000 });
-  const [displayValue, setDisplayValue] = useState(0);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
-    motionValue.set(value);
-    springValue.on("change", (latest) => {
-      setDisplayValue(Math.round(latest));
-    });
-  }, [value, motionValue, springValue]);
+    let start = 0;
+    const end = value;
+    if (start === end) return;
 
-  return <span>{displayValue}</span>;
+    const duration = 1500;
+    const incrementTime = 30;
+    const step = Math.ceil((end - start) / (duration / incrementTime));
+
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= end) {
+        setCount(end);
+        clearInterval(timer);
+      } else {
+        setCount(start);
+      }
+    }, incrementTime);
+
+    return () => clearInterval(timer);
+  }, [value]);
+
+  return <span>{count}</span>;
 };
+
+
+
 
 // ===== Animations Variants =====
 const fadeUp = {
@@ -131,7 +163,14 @@ const AboutSection = () => {
       .then(setWhoAreWe)
       .catch(console.error);
   }, []);
-
+useEffect(() => {
+  AOS.init({
+    duration: 800,       // مدة الأنيميشن
+    easing: "ease-out",  // نوع الحركة
+    once: true,          // يظهر مرة وحدة
+    offset: 120,         // متى يبدأ قبل ما يوصل
+  });
+}, []);
   useEffect(() => {
     fetchAPI("/home")
       .then((res) => setHomeStats(res?.statistics))
@@ -152,58 +191,72 @@ const AboutSection = () => {
   if (!whoAreWe) return null;
 
   return (
-    <motion.section
-      className="relative bg-[#F9FFF2] py-20 overflow-hidden"
-      dir="rtl"
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
-    >
+<section
+  className="relative bg-[#F9FFF2] py-20 overflow-hidden"
+  dir="rtl"
+  data-aos="fade-up"
+>
+
       {/* ===== Stats ===== */}
-      <motion.div
-        className="container mx-auto px-4 mb-20"
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-      >
+<div
+  className="container mx-auto px-0 mb-20"
+  data-aos="fade-up"
+  data-aos-delay="100"
+>
+
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8 text-center">
           {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              variants={fadeUp}
-              className="flex flex-col"
-            >
-              <span className="text-3xl font-bold text-gray-800">
-                + <Counter value={stat.value} />
-              </span>
-              <span className="text-[#FFD700] font-bold mt-2">
-                {stat.label}
-              </span>
-            </motion.div>
+<div
+  key={index}
+  className="flex flex-col items-center"
+  data-aos="zoom-in"
+  data-aos-delay={index * 100}
+>
+
+<div className="flex flex-col items-center">
+  
+  {/* ===== Circle with Number ===== */}
+  <motion.div
+    className="w-20 h-20 rounded-full bg-white flex items-center justify-center mb-2"
+    whileHover={{
+      scale: 1.06,
+      boxShadow: "0px 14px 30px rgba(0,0,0,0.18)",
+    }}
+    transition={{ type: "spring", stiffness: 300, damping: 18 }}
+  >
+    <span className="text-3xl font-bold text-gray-800">
+      + <Counter value={stat.value} />
+    </span>
+  </motion.div>
+
+  {/* ===== Label ===== */}
+  <span className="text-[#FFD700] font-bold">
+    {stat.label}
+  </span>
+
+</div>
+
+            </div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       {/* ===== About Card ===== */}
-      <motion.div
-        className="relative max-w-6xl mx-auto bg-white rounded-[100px] md:rounded-[200px] py-16 px-10 md:px-20 shadow-sm border border-yellow-50 mx-4"
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        transition={{ delay: 0.2 }}
-      >
+<div
+  className="relative max-w-6xl mx-auto bg-white rounded-[100px] md:rounded-[200px]
+             py-16 px-10 md:px-20 shadow-sm border border-yellow-50 mx-4"
+  data-aos="fade-up"
+  data-aos-delay="200"
+>
+
         <div className="flex flex-col md:flex-row items-center gap-12">
           
           {/* ===== Text ===== */}
-          <motion.div
-            className="flex-1 text-right"
-            variants={fadeUp}
-            transition={{ duration: 0.6 }}
-          >
+<div
+  className="flex-1 text-right"
+  data-aos="fade-right"
+>
+
             <div className="bg-[#FFFCE4] inline-block px-6 py-2 rounded-lg mb-4">
               <h2 className="text-[#FFD700] text-2xl font-bold">
                 من نحن؟
@@ -222,14 +275,14 @@ const AboutSection = () => {
               <span>←</span>
               <a href="/about">إقرأ المزيد عنا</a>
             </button>
-          </motion.div>
+          </div>
 
           {/* ===== Image ===== */}
-          <motion.div
-            className="flex-1 flex justify-center"
-            variants={imageAnim}
-            transition={{ duration: 0.6 }}
-          >
+<div
+  className="flex-1 flex justify-center"
+  data-aos="fade-left"
+>
+
             <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-2xl">
               <img
                 src="/images/about.jpg"
@@ -237,11 +290,11 @@ const AboutSection = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-          </motion.div>
+          </div>
 
         </div>
-      </motion.div>
-    </motion.section>
+      </div>
+    </section>
   );
 };
 

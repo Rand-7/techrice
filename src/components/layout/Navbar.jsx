@@ -111,6 +111,7 @@ export default function Navbar() {
       className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg shadow-sm"
       dir="rtl"
     >
+      
       <div className="flex items-center justify-between px-8 py-4">
         {/* LOGO */}
         <div className="flex items-center gap-2">
