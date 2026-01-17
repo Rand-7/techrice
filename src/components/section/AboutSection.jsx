@@ -165,10 +165,10 @@ const AboutSection = () => {
   }, []);
 useEffect(() => {
   AOS.init({
-    duration: 800,       // مدة الأنيميشن
-    easing: "ease-out",  // نوع الحركة
-    once: true,          // يظهر مرة وحدة
-    offset: 120,         // متى يبدأ قبل ما يوصل
+    duration: 800,       
+    easing: "ease-out",
+    once: true,          
+    offset: 120,         
   });
 }, []);
   useEffect(() => {

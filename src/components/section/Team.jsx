@@ -137,7 +137,6 @@ const Team = () => {
 }, []);
 
 
-  /* ===== Animations (من الكود الأول) ===== */
   const titleAnim = {
     hidden: { opacity: 0, y: -20 },
     visible: {
@@ -207,11 +206,10 @@ const Team = () => {
   // transition={{ duration: 0.6, delay: index * 0.1 }}
   // whileHover={{ y: -6 }}
   //             className="flex flex-col items-center group cursor-pointer"
-    data-aos="fade-up"       // نوع الانيميشن
-  data-aos-delay={index * 100} // تأخير حسب ترتيب العنصر
+    data-aos="fade-up"   
+  data-aos-delay={index * 100} 
 >
             
-              {/* Floating image */}
               <motion.div
                 animate={{ y: [0, -6, 0] }}
                 transition={{

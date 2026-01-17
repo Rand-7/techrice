@@ -213,9 +213,12 @@ useEffect(() => {
               </div>
             </div>
 
-            <div className="w-full h-56 bg-[#FFFCE4] rounded-2xl flex items-center justify-center text-yellow-600/50">
-              خريطة الموقع التقريبي
-            </div>
+<img
+  src="/images/contact-map.png" // عدلي المسار حسب الصورة عندك
+  alt="خريطة الموقع"
+  className="w-full h-56 object-cover rounded-2xl"
+/>
+
           </div>
 
           {/* Form */}
